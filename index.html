@@ -83,15 +83,43 @@
     </div>
 
     <script>
-        // This will be replaced by a static page list generated during build,
-        // or you can manually add links here.
-        // Example:
-        // document.getElementById('pages').innerHTML = `
-        //   <a class="card" href="pages/my-page.html">
-        //     <h2>My Page</h2>
-        //     <p>Description of the page</p>
-        //   </a>
-        // `;
+        const REPO = 'anil-servicenow/corellm';
+        const DIR = 'pages';
+
+        function toTitle(filename) {
+            return filename
+                .replace(/\.html$/i, '')
+                .replace(/[-_]/g, ' ')
+                .replace(/\b\w/g, c => c.toUpperCase());
+        }
+
+        async function loadPages() {
+            const grid = document.getElementById('pages');
+            try {
+                const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${DIR}`);
+                if (!res.ok) throw new Error(res.statusText);
+                const files = await res.json();
+                const htmlFiles = files
+                    .filter(f => f.type === 'file' && f.name.endsWith('.html'))
+                    .sort((a, b) => a.name.localeCompare(b.name));
+
+                if (htmlFiles.length === 0) {
+                    grid.innerHTML = '<div class="empty"><p>No pages yet. Add HTML files to the <code>pages/</code> directory.</p></div>';
+                    return;
+                }
+
+                grid.innerHTML = htmlFiles.map(f => `
+                    <a class="card" href="${DIR}/${f.name}">
+                        <h2>${toTitle(f.name)}</h2>
+                        <p>${f.name}</p>
+                    </a>
+                `).join('');
+            } catch (e) {
+                grid.innerHTML = '<div class="empty"><p>Could not load pages. Please try again later.</p></div>';
+            }
+        }
+
+        loadPages();
     </script>
 </body>
 </html>
