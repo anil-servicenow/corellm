@@ -1,0 +1,48 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate page index
+        run: |
+          cd pages
+          FILES=$(find . -name '*.html' -type f | sort)
+          if [ -z "$FILES" ]; then
+            echo "No HTML files found in pages/"
+            exit 0
+          fi
+          CARDS=""
+          for f in $FILES; do
+            NAME=$(basename "$f" .html)
+            TITLE=$(echo "$NAME" | sed 's/-/ /g; s/_/ /g' | sed 's/\b\(.\)/\u\1/g')
+            CARDS="$CARDS<a class=\"card\" href=\"pages/$f\"><h2>$TITLE</h2><p>$NAME.html</p></a>"
+          done
+          cd ..
+          sed -i "s|<div class=\"grid\" id=\"pages\">.*</div>|<div class=\"grid\" id=\"pages\">$CARDS</div>|" index.html
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - uses: actions/deploy-pages@v4
+        id: deployment

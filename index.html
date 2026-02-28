@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoreLLM - LLM Generated Pages</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        header {
+            max-width: 900px;
+            margin: 0 auto 3rem;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+        header p {
+            color: #888;
+            font-size: 1.1rem;
+        }
+        .grid {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+        }
+        .card {
+            background: #161616;
+            border: 1px solid #222;
+            border-radius: 8px;
+            padding: 1.25rem;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .card:hover {
+            border-color: #444;
+            background: #1a1a1a;
+        }
+        .card h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+        .card p {
+            font-size: 0.85rem;
+            color: #777;
+        }
+        .empty {
+            text-align: center;
+            color: #555;
+            grid-column: 1 / -1;
+            padding: 3rem 1rem;
+        }
+        .empty code {
+            background: #1a1a1a;
+            padding: 0.2em 0.5em;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>CoreLLM</h1>
+        <p>Collection of LLM-generated pages</p>
+    </header>
+    <div class="grid" id="pages">
+        <div class="empty">
+            <p>Drop HTML files into the <code>pages/</code> directory to get started.</p>
+        </div>
+    </div>
+
+    <script>
+        // This will be replaced by a static page list generated during build,
+        // or you can manually add links here.
+        // Example:
+        // document.getElementById('pages').innerHTML = `
+        //   <a class="card" href="pages/my-page.html">
+        //     <h2>My Page</h2>
+        //     <p>Description of the page</p>
+        //   </a>
+        // `;
+    </script>
+</body>
+</html>
